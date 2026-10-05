@@ -50,8 +50,9 @@ RUN dos2unix /scripts/*.sh && \
 
 COPY /root /
 RUN touch /var/log/mt5_setup.log && \
-    chown abc:abc /var/log/mt5_setup.log && \
+    mkdir -p /custom_app && \
+    chown -R abc:abc /var/log/mt5_setup.log /custom_app && \
     chmod 644 /var/log/mt5_setup.log
 
 EXPOSE 3000 5000 5001 8001 18812
-VOLUME /config
+VOLUME ["/config", "/custom_app"]

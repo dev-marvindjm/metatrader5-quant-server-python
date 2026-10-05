@@ -1,0 +1,5 @@
+# Agrega aquí las librerías adicionales que necesite tu proyecto.
+# MetaTrader5, numpy, pandas y pytz ya están provistas por el contenedor base.
+# Ejemplo:
+# requests>=2.28.0
+# schedule>=1.2.0

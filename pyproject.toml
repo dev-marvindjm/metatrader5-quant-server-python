@@ -1,0 +1,37 @@
+[project]
+name = "quant-trading-server"
+version = "1.0.0"
+description = "Modular, asynchronous, and decoupled quantitative & algorithmic trading API for MetaTrader 5 and Binary Options"
+authors = [{ name = "Quant Trading Team" }]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.30.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.2.0",
+    "sqlmodel>=0.0.19",
+    "sqlalchemy[asyncio]>=2.0.30",
+    "asyncpg>=0.29.0",
+    "alembic>=1.13.0",
+    "cryptography>=42.0.0",
+    "httpx>=0.27.0",
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    "pytz>=2024.1",
+    "websockets>=12.0",
+    "curl-cffi>=0.7.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true

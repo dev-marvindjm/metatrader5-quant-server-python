@@ -1,0 +1,48 @@
+services:
+  mt5:
+    build:
+      context: backend/mt5
+      dockerfile: Dockerfile
+    container_name: ${CONTAINER_NAME:-mt5-standalone}
+    restart: unless-stopped
+    shm_size: "1gb"
+    ports:
+      # Acceso Web a la interfaz gráfica de MetaTrader 5 (KasmVNC)
+      # Abrir en el navegador: http://localhost:3000
+      - "${VNC_PORT:-3000}:3000"
+
+      # Puerto de la API Flask original de MT5 (opcional si ENABLE_FLASK_API=true)
+      - "${MT5_API_PORT:-5001}:5001"
+
+      # Puerto expuesto para tu propio proyecto/API (ej. FastAPI, Flask, Webhooks, etc.)
+      - "${CUSTOM_APP_PORT:-8000}:8000"
+
+    volumes:
+      # Persistencia de Wine, MetaTrader 5, terminal64.exe y configuraciones del broker
+      - ./config:/config
+
+      # Tu proyecto personalizado montado en tiempo real dentro del contenedor
+      - ./custom_app:/custom_app
+
+    env_file:
+      - .env.standalone
+
+    environment:
+      # Variables del sistema KasmVNC y Wine
+      - CUSTOM_USER=${CUSTOM_USER:-admin}
+      - PASSWORD=${PASSWORD:-admin1234}
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+      - WINEDEBUG=${WINEDEBUG:--all,err-toolbar,fixme-all}
+
+      # Credenciales de tu Broker en MetaTrader 5
+      - MT5_LOGIN=${MT5_LOGIN:-}
+      - MT5_PASSWORD=${MT5_PASSWORD:-}
+      - MT5_SERVER=${MT5_SERVER:-}
+      - MT5_PATH=${MT5_PATH:-C:\\Program Files\\MetaTrader 5\\terminal64.exe}
+
+      # Configuración de arranque de tu proyecto personalizado
+      - ENABLE_FLASK_API=${ENABLE_FLASK_API:-false}
+      - CUSTOM_SCRIPT=${CUSTOM_SCRIPT:-/custom_app/main.py}
+      - CUSTOM_COMMAND=${CUSTOM_COMMAND:-}

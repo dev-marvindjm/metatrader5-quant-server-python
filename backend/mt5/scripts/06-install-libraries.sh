@@ -5,7 +5,15 @@ source /scripts/02-common.sh
 log_message "RUNNING" "06-install-libraries.sh"
 
 # Install MetaTrader5 library in Windows if not installed
-log_message "INFO" "Installing MetaTrader5 library and dependencies in Windows"
+log_message "INFO" "Installing MetaTrader5 library and base dependencies in Windows"
 if ! is_wine_python_package_installed "MetaTrader5"; then
-    $wine_executable python -m pip install --no-cache-dir -r /app/requirements.txt
+    if [ -f "/app/requirements.txt" ]; then
+        $wine_executable python -m pip install --no-cache-dir -r /app/requirements.txt
+    fi
+fi
+
+# Install custom project dependencies if custom requirements.txt is mounted
+if [ -f "/custom_app/requirements.txt" ]; then
+    log_message "INFO" "Installing custom project dependencies from /custom_app/requirements.txt in Wine Python..."
+    $wine_executable python -m pip install --no-cache-dir -r /custom_app/requirements.txt
 fi
