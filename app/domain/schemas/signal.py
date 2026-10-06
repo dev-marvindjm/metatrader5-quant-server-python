@@ -43,6 +43,9 @@ class SignalResponse(BaseModel):
     stop_loss: Optional[float] = None
     take_profit: Optional[float] = None
     target_broker: Optional[str] = None
+    template_id: Optional[int] = None
+    sender_id: Optional[str] = None
+    raw_data: Optional[str] = None
     gale_steps: int
     gale_multiplier: float
     status: str
